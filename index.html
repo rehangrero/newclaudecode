@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Profiler - Professional Investment Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-section, .output-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .output-content {
+            /* Initially hidden, shown after generation */
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .report-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .report-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .report-section h4 {
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .property-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .scenario-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .scenario-card h5 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .risk-low {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .risk-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .risk-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .export-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .financial-table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+
+        .financial-table th,
+        .financial-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .financial-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .financial-table td {
+            color: #555;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Property Profiler</h1>
+            <p>Intelligent property analysis from natural language descriptions</p>
+        </div>
+
+        <div class="main-grid">
+            <div class="input-section">
+                <h2 class="section-title">Describe Your Property</h2>
+                <form id="propertyForm">
+                    <div class="form-group">
+                        <label for="description">Property Description</label>
+                        <textarea id="description" placeholder="Describe your property in detail. Include:
+• Property type (land, apartment, house, villa, commercial, etc.)
+• Location (city, area, neighborhood)
+• Size (square feet, perches, bedrooms, etc.)
+• Price or valuation
+• Age and condition
+• Features and amenities
+• Views and surroundings
+• Potential uses and opportunities
+• Any other relevant details
+
+Example: 'Luxury 3-bedroom apartment in Colombo 7, 2500 sq ft, asking price LKR 35 million. Ocean view, swimming pool, 24/7 security, built 5 years ago in excellent condition. Close to schools and shopping centers. Perfect for rental investment.'" required style="min-height: 300px;"></textarea>
+                    </div>
+
+                    <button type="submit" class="generate-btn">Generate Property Profile</button>
+                    <button type="button" onclick="testGeneration()" style="margin-top: 10px; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%;">Test with Sample Data</button>
+
+                    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; font-size: 0.9rem; color: #666;">
+                        <strong>💡 Tips:</strong> The AI will intelligently extract property type, location, size, price, age, condition, and features from your description.
+                        Be as detailed as possible for best results. Mention specific numbers (e.g., "35 million", "2500 sq ft", "built in 2019").
+                    </div>
+                </form>
+            </div>
+
+            <div class="output-section">
+                <h2 class="section-title">Property Analysis Report</h2>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 15px; color: #666;">Analyzing property data...</p>
+                </div>
+                <div class="output-content" id="outputContent">
+                    <!-- Report will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PropertyProfiler {
+            constructor() {
+                this.form = document.getElementById('propertyForm');
+                this.outputContent = document.getElementById('outputContent');
+                this.loading = document.getElementById('loading');
+
+                // Initially hide the output content
+                this.outputContent.style.display = 'none';
+                this.loading.style.display = 'none';
+
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                this.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    console.log('Form submitted!');
+                    this.generateProfile();
+                });
+
+                // Add character count display
+                const description = document.getElementById('description');
+                const label = document.querySelector('label[for="description"]');
+                description.addEventListener('input', (e) => {
+                    const charCount = e.target.value.length;
+                    if (!document.getElementById('charCount')) {
+                        const counter = document.createElement('span');
+                        counter.id = 'charCount';
+                        counter.style.float = 'right';
+                        counter.style.fontSize = '0.9rem';
+                        counter.style.color = '#666';
+                        label.appendChild(counter);
+                    }
+                    document.getElementById('charCount').textContent = `${charCount} characters`;
+                });
+
+                console.log('Property Profiler initialized successfully!');
+            }
+
+            extractPropertyData() {
+                const description = document.getElementById('description').value;
+
+                // Intelligent extraction from description
+                const data = {
+                    type: this.extractPropertyType(description),
+                    location: this.extractLocation(description),
+                    size: this.extractSize(description),
+                    price: this.extractPrice(description),
+                    age: this.extractAge(description),
+                    condition: this.extractCondition(description),
+                    description: description,
+                    additionalInfo: ''
+                };
+
+                console.log('Extracted data:', data);
+                return data;
+            }
+
+            extractPropertyType(text) {
+                const types = {
+                    'land': /\b(land|plot|bare land|property land|acres?|perches?)\b/i,
+                    'apartment': /\b(apartment|flat|condominium|condo|unit)\b/i,
+                    'house': /\b(house|home|residence|bungalow|single family)\b/i,
+                    'villa': /\b(villa|luxury home|estate)\b/i,
+                    'commercial': /\b(commercial|office|shop|retail|restaurant|warehouse)\b/i,
+                    'mixed': /\b(mixed use|mixed-use|multi-use)\b/i
+                };
+
+                for (const [type, regex] of Object.entries(types)) {
+                    if (regex.test(text)) {
+                        return type;
+                    }
+                }
+                return 'property'; // default
+            }
+
+            extractLocation(text) {
+                // Common Sri Lankan locations
+                const locationPatterns = [
+                    /\b(Colombo\s*\d*)\b/i,
+                    /\b(Kandy|Galle|Negombo|Bentota|Hikkaduwa|Mirissa|Ella|Nuwara Eliya|Matara|Kalutara|Panadura|Ratmalana|Mount Lavinia|Dehiwala|Nugegoda|Maharagama|Kotte|Battaramulla|Rajagiriya|Nawala|Kiribathgoda|Wattala|Ja-Ela|Kadawatha)\b/i,
+                    /\b([\w\s]+(?:road|street|avenue|lane|place|gardens|drive|mawatha|path))\b/i
+                ];
+
+                for (const pattern of locationPatterns) {
+                    const match = text.match(pattern);
+                    if (match) {
+                        return match[0].trim();
+                    }
+                }
+
+                // Try to find location after "in" or "at"
+                const locMatch = text.match(/\b(?:in|at|located in|located at|situated in|situated at)\s+([A-Z][\w\s]+?)(?:\.|,|\s+with|\s+featuring|\s+having)/i);
+                if (locMatch) {
+                    return locMatch[1].trim();
+                }
+
+                return 'Sri Lanka'; // default
+            }
+
+            extractSize(text) {
+                // Square feet
+                let match = text.match(/(\d+[,\d]*)\s*(?:sq\.?\s*ft\.?|square feet|sqft|sf)/i);
+                if (match) {
+                    return match[1].replace(/,/g, '');
+                }
+
+                // Perches
+                match = text.match(/(\d+\.?\d*)\s*(?:perches?|perch)/i);
+                if (match) {
+                    return match[1] + ' perches';
+                }
+
+                // Acres
+                match = text.match(/(\d+\.?\d*)\s*(?:acres?)/i);
+                if (match) {
+                    return (parseFloat(match[1]) * 160) + ' perches'; // Convert acres to perches
+                }
+
+                // Bedrooms as size indicator
+                match = text.match(/(\d+)\s*(?:bedroom|bed|br|bhk)/i);
+                if (match) {
+                    // Estimate sq ft based on bedrooms
+                    const bedrooms = parseInt(match[1]);
+                    return (bedrooms * 800 + 500).toString(); // Rough estimate
+                }
+
+                return '2000'; // default
+            }
+
+            extractPrice(text) {
+                // Look for price patterns
+                const patterns = [
+                    /(?:LKR|Rs\.?|rupees?)\s*([0-9,]+(?:\.\d+)?)\s*(?:million|mil|m|crore|cr|lakh|lac|k)?/i,
+                    /([0-9,]+(?:\.\d+)?)\s*(?:million|mil|m|crore|cr|lakh|lac|k)?\s*(?:LKR|Rs\.?|rupees?)/i,
+                    /(?:price|asking|valued?|worth)\s*(?:of|at|is)?\s*(?:LKR|Rs\.?)?\s*([0-9,]+(?:\.\d+)?)\s*(?:million|mil|m|crore|cr|lakh|lac|k)?/i,
+                    /([0-9,]+(?:\.\d+)?)\s*(?:million|mil|m|crore|cr|lakh|lac|k)/i
+                ];
+
+                for (const pattern of patterns) {
+                    const match = text.match(pattern);
+                    if (match) {
+                        let price = match[1].replace(/,/g, '');
+                        const multiplier = match[0].toLowerCase();
+
+                        // Convert to actual number based on suffix
+                        if (multiplier.includes('crore') || multiplier.includes('cr')) {
+                            price = parseFloat(price) * 10000000;
+                        } else if (multiplier.includes('million') || multiplier.includes('mil') || / m(?:\s|$)/.test(multiplier)) {
+                            price = parseFloat(price) * 1000000;
+                        } else if (multiplier.includes('lakh') || multiplier.includes('lac')) {
+                            price = parseFloat(price) * 100000;
+                        } else if (multiplier.includes('k')) {
+                            price = parseFloat(price) * 1000;
+                        } else {
+                            price = parseFloat(price);
+                        }
+
+                        return price.toString();
+                    }
+                }
+
+                // If no price found, estimate based on location and type
+                const isColomboPrime = /colombo\s*[1-7]/i.test(text);
+                const isLuxury = /luxury|premium|high-end/i.test(text);
+
+                if (isColomboPrime && isLuxury) {
+                    return '50000000'; // 50 million default for luxury Colombo
+                } else if (isColomboPrime) {
+                    return '25000000'; // 25 million default for Colombo
+                } else {
+                    return '15000000'; // 15 million default for other areas
+                }
+            }
+
+            extractAge(text) {
+                // Year patterns
+                let match = text.match(/built\s*(?:in)?\s*(\d{4})/i);
+                if (match) {
+                    const year = parseInt(match[1]);
+                    const age = new Date().getFullYear() - year;
+                    if (age <= 1) return 'new';
+                    if (age <= 5) return '1-5';
+                    if (age <= 10) return '5-10';
+                    if (age <= 20) return '10-20';
+                    return '20+';
+                }
+
+                // Age patterns
+                match = text.match(/(\d+)\s*(?:year|yr)s?\s*(?:old|ago)/i);
+                if (match) {
+                    const age = parseInt(match[1]);
+                    if (age <= 1) return 'new';
+                    if (age <= 5) return '1-5';
+                    if (age <= 10) return '5-10';
+                    if (age <= 20) return '10-20';
+                    return '20+';
+                }
+
+                // Keywords
+                if (/\b(new|brand new|newly built|just completed|recently completed)\b/i.test(text)) {
+                    return 'new';
+                }
+                if (/\b(recent|recently built|modern construction)\b/i.test(text)) {
+                    return '1-5';
+                }
+                if (/\b(old|vintage|colonial|antique|heritage)\b/i.test(text)) {
+                    return '20+';
+                }
+
+                return '5-10'; // default
+            }
+
+            extractCondition(text) {
+                if (/\b(excellent|pristine|perfect|immaculate|mint)\b/i.test(text)) {
+                    return 'excellent';
+                }
+                if (/\b(good|well maintained|maintained|updated)\b/i.test(text)) {
+                    return 'good';
+                }
+                if (/\b(fair|average|decent|okay)\b/i.test(text)) {
+                    return 'fair';
+                }
+                if (/\b(needs renovation|renovation needed|fixer upper|needs work|repairs needed|to be renovated)\b/i.test(text)) {
+                    return 'renovation';
+                }
+
+                // If new or luxury mentioned, assume excellent
+                if (/\b(new|luxury|premium)\b/i.test(text)) {
+                    return 'excellent';
+                }
+
+                return 'good'; // default
+            }
+
+            analyzeDescription(description) {
+                const features = {
+                    luxury: /luxury|premium|high-end|exclusive|prestigious/i.test(description),
+                    oceanView: /ocean view|sea view|beach front|coastal|waterfront/i.test(description),
+                    cityView: /city view|skyline|urban view/i.test(description),
+                    pool: /pool|swimming/i.test(description),
+                    garden: /garden|landscap|green/i.test(description),
+                    parking: /parking|garage|carport/i.test(description),
+                    security: /security|gated|secure|guard/i.test(description),
+                    furnished: /furnished|furniture/i.test(description),
+                    balcony: /balcony|terrace|patio/i.test(description),
+                    modernDesign: /modern|contemporary|architect|designer/i.test(description),
+                    investment: /investment|rental|income|yield|roi/i.test(description),
+                    commercial: /commercial|office|shop|retail|restaurant/i.test(description),
+                    residential: /residential|home|house|apartment|living/i.test(description),
+                    development: /develop|subdivision|project|construction/i.test(description)
+                };
+
+                const extractedFeatures = [];
+                for (const [key, regex] of Object.entries(features)) {
+                    if (regex) {
+                        extractedFeatures.push(key);
+                    }
+                }
+
+                return extractedFeatures;
+            }
+
+            calculateFinancials(data) {
+                const price = parseFloat(data.price) || 1000000; // Default to 1M if no price
+
+                // Determine if size is in perches or square feet
+                const isPerches = typeof data.size === 'string' && data.size.includes('perches');
+                const sizeNum = parseFloat(data.size) || 1000; // Extract numeric value
+
+                // Calculate price per unit - only calculate for the actual unit type
+                let pricePerSqFt = null;
+                let pricePerPerch = null;
+
+                if (isPerches && sizeNum > 0) {
+                    // Only calculate price per perch when size is in perches
+                    pricePerPerch = price / sizeNum;
+                } else if (!isPerches && sizeNum > 0) {
+                    // Calculate price per sq ft for square footage
+                    pricePerSqFt = price / sizeNum;
+                }
+
+                // Market assumptions based on Sri Lankan market
+                const marketAppreciation = data.location.toLowerCase().includes('colombo') ? 0.08 : 0.06;
+                const rentalYield = data.type === 'apartment' ? 0.05 : 0.04;
+                const shortTermMultiplier = 2.5; // Airbnb vs long-term
+
+                const monthlyRental = price * rentalYield / 12;
+                const airbnbDaily = monthlyRental * shortTermMultiplier / 20; // 20 days occupancy
+
+                // 5 and 10 year projections
+                const value5Year = price * Math.pow(1 + marketAppreciation, 5);
+                const value10Year = price * Math.pow(1 + marketAppreciation, 10);
+                const totalRental5Year = monthlyRental * 12 * 5;
+                const totalRental10Year = monthlyRental * 12 * 10;
+
+                return {
+                    currentValue: price,
+                    pricePerSqFt: pricePerSqFt,
+                    pricePerPerch: pricePerPerch,
+                    isPerches: isPerches,
+                    sizeNum: sizeNum,
+                    monthlyRental: monthlyRental,
+                    annualRental: monthlyRental * 12,
+                    rentalYield: rentalYield * 100,
+                    airbnbDaily: airbnbDaily,
+                    airbnbMonthly: airbnbDaily * 20,
+                    value5Year: value5Year,
+                    value10Year: value10Year,
+                    appreciation5Year: value5Year - price,
+                    appreciation10Year: value10Year - price,
+                    totalReturn5Year: (value5Year - price) + totalRental5Year,
+                    totalReturn10Year: (value10Year - price) + totalRental10Year,
+                    roi5Year: ((value5Year - price + totalRental5Year) / price) * 100,
+                    roi10Year: ((value10Year - price + totalRental10Year) / price) * 100
+                };
+            }
+
+            generateScenarios(data, features, financials) {
+                const scenarios = [];
+
+                // Investor Scenario
+                scenarios.push({
+                    type: 'Investor',
+                    description: 'Buy-to-rent investment strategy',
+                    metrics: {
+                        'Initial Investment': `LKR ${financials.currentValue.toLocaleString()}`,
+                        'Monthly Income': `LKR ${Math.round(financials.monthlyRental).toLocaleString()}`,
+                        'Annual Yield': `${financials.rentalYield.toFixed(2)}%`,
+                        'Payback Period': `${(financials.currentValue / financials.annualRental).toFixed(1)} years`,
+                        '5-Year ROI': `${financials.roi5Year.toFixed(1)}%`
+                    },
+                    viability: financials.rentalYield > 4 ? 'High' : 'Medium'
+                });
+
+                // End-User Scenario
+                const endUserMetrics = {
+                    'Purchase Price': `LKR ${financials.currentValue.toLocaleString()}`,
+                    'Market Comparison': features.includes('luxury') ? 'Premium' : 'Standard',
+                    'Resale Potential': data.location.toLowerCase().includes('colombo') ? 'Excellent' : 'Good',
+                    '10-Year Value': `LKR ${Math.round(financials.value10Year).toLocaleString()}`
+                };
+
+                // Add appropriate price per unit metric
+                if (financials.pricePerPerch !== null) {
+                    endUserMetrics['Price/Perch'] = `LKR ${Math.round(financials.pricePerPerch).toLocaleString()}`;
+                } else if (financials.pricePerSqFt !== null) {
+                    endUserMetrics['Price/SqFt'] = `LKR ${Math.round(financials.pricePerSqFt).toLocaleString()}`;
+                }
+
+                scenarios.push({
+                    type: 'End-User',
+                    description: 'Purchase for personal residence',
+                    metrics: endUserMetrics,
+                    viability: 'High'
+                });
+
+                // Developer Scenario (if applicable)
+                if (data.type === 'land' || features.includes('development')) {
+                    const developmentCost = financials.currentValue * 1.5; // Rough estimate
+                    const developedValue = financials.currentValue * 3; // Rough estimate
+
+                    scenarios.push({
+                        type: 'Developer',
+                        description: 'Development or redevelopment opportunity',
+                        metrics: {
+                            'Land Cost': `LKR ${financials.currentValue.toLocaleString()}`,
+                            'Est. Dev Cost': `LKR ${Math.round(developmentCost).toLocaleString()}`,
+                            'Total Investment': `LKR ${Math.round(financials.currentValue + developmentCost).toLocaleString()}`,
+                            'Projected Value': `LKR ${Math.round(developedValue).toLocaleString()}`,
+                            'Profit Margin': `${(((developedValue - financials.currentValue - developmentCost) / (financials.currentValue + developmentCost)) * 100).toFixed(1)}%`
+                        },
+                        viability: data.type === 'land' ? 'High' : 'Medium'
+                    });
+                }
+
+                // Airbnb/Short-term Scenario
+                if (features.includes('luxury') || features.includes('oceanView') || features.includes('furnished')) {
+                    scenarios.push({
+                        type: 'Short-term Rental',
+                        description: 'Airbnb or vacation rental model',
+                        metrics: {
+                            'Daily Rate': `LKR ${Math.round(financials.airbnbDaily).toLocaleString()}`,
+                            'Monthly (65% occupancy)': `LKR ${Math.round(financials.airbnbMonthly).toLocaleString()}`,
+                            'Annual Income': `LKR ${Math.round(financials.airbnbMonthly * 12).toLocaleString()}`,
+                            'Yield': `${((financials.airbnbMonthly * 12) / financials.currentValue * 100).toFixed(2)}%`,
+                            'Premium vs Long-term': `${((financials.airbnbMonthly / financials.monthlyRental - 1) * 100).toFixed(0)}%`
+                        },
+                        viability: features.includes('luxury') || features.includes('oceanView') ? 'High' : 'Medium'
+                    });
+                }
+
+                return scenarios;
+            }
+
+            assessRisks(data, features) {
+                const risks = [];
+
+                // Market Risk
+                risks.push({
+                    category: 'Market Risk',
+                    level: data.location.toLowerCase().includes('colombo') ? 'Low' : 'Medium',
+                    description: 'Price volatility and demand fluctuations',
+                    mitigation: 'Prime location with stable demand patterns'
+                });
+
+                // Legal/Zoning Risk
+                risks.push({
+                    category: 'Legal/Zoning',
+                    level: features.includes('commercial') ? 'Medium' : 'Low',
+                    description: 'Title issues or zoning restrictions',
+                    mitigation: 'Conduct thorough legal due diligence'
+                });
+
+                // Construction/Renovation Risk
+                if (data.condition === 'renovation' || data.age === '20+') {
+                    risks.push({
+                        category: 'Renovation Risk',
+                        level: 'Medium',
+                        description: 'Unexpected renovation costs',
+                        mitigation: 'Get detailed contractor quotes and add 20% buffer'
+                    });
+                }
+
+                // Environmental Risk
+                if (features.includes('oceanView') || data.description.toLowerCase().includes('coastal')) {
+                    risks.push({
+                        category: 'Environmental',
+                        level: 'Medium',
+                        description: 'Coastal erosion, flooding, or weather damage',
+                        mitigation: 'Insurance and proper maintenance planning'
+                    });
+                }
+
+                return risks;
+            }
+
+            generateProfile() {
+                console.log('Generating profile...');
+                this.loading.style.display = 'block';
+                this.outputContent.style.display = 'none';
+
+                setTimeout(() => {
+                    try {
+                        const data = this.extractPropertyData();
+                        console.log('Property data:', data);
+
+                        const features = this.analyzeDescription(data.description);
+                        console.log('Features:', features);
+
+                        const financials = this.calculateFinancials(data);
+                        console.log('Financials:', financials);
+
+                        const scenarios = this.generateScenarios(data, features, financials);
+                        const risks = this.assessRisks(data, features);
+
+                        this.renderReport(data, features, financials, scenarios, risks);
+
+                        this.loading.style.display = 'none';
+                        this.outputContent.style.display = 'block';
+                        console.log('Report rendered successfully');
+
+                        // Scroll to output
+                        this.outputContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } catch (error) {
+                        console.error('Error generating profile:', error);
+                        this.loading.style.display = 'none';
+                        this.outputContent.style.display = 'block';
+                        this.outputContent.innerHTML = '<div class="report-section"><h3>Error</h3><p style="color: red;">An error occurred while generating the report. Please check the console for details.</p></div>';
+                    }
+                }, 1500);
+            }
+
+            renderReport(data, features, financials, scenarios, risks) {
+                // Build metrics cards - only show the relevant price metric
+                let metricsHTML = `
+                    <div class="metric-card">
+                        <div class="metric-label">Property Value</div>
+                        <div class="metric-value">LKR ${(financials.currentValue / 1000000).toFixed(1)}M</div>
+                    </div>`;
+
+                // Only show price per perch if the property is measured in perches
+                if (financials.pricePerPerch !== null) {
+                    metricsHTML += `
+                    <div class="metric-card">
+                        <div class="metric-label">Price per Perch</div>
+                        <div class="metric-value">LKR ${Math.round(financials.pricePerPerch).toLocaleString()}</div>
+                    </div>`;
+                } else if (financials.pricePerSqFt !== null) {
+                    // Only show price per sq ft if the property is measured in sq ft
+                    metricsHTML += `
+                    <div class="metric-card">
+                        <div class="metric-label">Price per Sq Ft</div>
+                        <div class="metric-value">LKR ${Math.round(financials.pricePerSqFt).toLocaleString()}</div>
+                    </div>`;
+                }
+
+                metricsHTML += `
+                    <div class="metric-card">
+                        <div class="metric-label">Rental Yield</div>
+                        <div class="metric-value">${financials.rentalYield.toFixed(2)}%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">5-Year ROI</div>
+                        <div class="metric-value">${financials.roi5Year.toFixed(1)}%</div>
+                    </div>`;
+
+                const html = `
+                    <!-- Executive Summary -->
+                    <div class="report-section">
+                        <h3>📊 Executive Summary</h3>
+                        <p><strong>${data.type.charAt(0).toUpperCase() + data.type.slice(1)}</strong> property in <strong>${data.location}</strong>
+                        offering ${this.determineInvestmentGrade(financials, features)} investment potential.
+                        Current valuation at <strong>LKR ${parseInt(data.price).toLocaleString()}</strong>
+                        with projected ${financials.roi5Year.toFixed(1)}% ROI over 5 years.</p>
+
+                        <div class="property-metrics">
+                            ${metricsHTML}
+                        </div>
+                    </div>
+
+                    <!-- Property Overview -->
+                    <div class="report-section">
+                        <h3>🏡 Property Overview</h3>
+                        <h4>Extracted Information</h4>
+                        <ul>
+                            <li><strong>Type:</strong> ${data.type.charAt(0).toUpperCase() + data.type.slice(1)}</li>
+                            <li><strong>Location:</strong> ${data.location}</li>
+                            <li><strong>Size:</strong> ${data.size} ${data.size.includes('perch') ? '' : 'sq ft'}</li>
+                            <li><strong>Price:</strong> LKR ${parseInt(data.price).toLocaleString()}</li>
+                            <li><strong>Age:</strong> ${this.formatAge(data.age)}</li>
+                            <li><strong>Condition:</strong> ${data.condition.charAt(0).toUpperCase() + data.condition.slice(1)}</li>
+                        </ul>
+
+                        <h4>Identified Features</h4>
+                        <ul>
+                            ${features.map(f => `<li>${this.formatFeature(f)}</li>`).join('')}
+                            ${features.length === 0 ? '<li>Standard residential features</li>' : ''}
+                        </ul>
+                    </div>
+
+                    <!-- Market Positioning -->
+                    <div class="report-section">
+                        <h3>🎯 Market Positioning</h3>
+                        <h4>Target Buyer Profile</h4>
+                        <ul>
+                            ${this.getTargetBuyers(data, features).map(buyer => `<li>${buyer}</li>`).join('')}
+                        </ul>
+
+                        <h4>Best Use Cases</h4>
+                        <ul>
+                            ${this.getBestUseCases(data, features).map(useCase => `<li>${useCase}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Financial Profile -->
+                    <div class="report-section">
+                        <h3>💰 Financial Profile</h3>
+                        <table class="financial-table">
+                            <tr>
+                                <th>Metric</th>
+                                <th>Current</th>
+                                <th>5 Years</th>
+                                <th>10 Years</th>
+                            </tr>
+                            <tr>
+                                <td>Property Value</td>
+                                <td>LKR ${Math.round(financials.currentValue).toLocaleString()}</td>
+                                <td>LKR ${Math.round(financials.value5Year).toLocaleString()}</td>
+                                <td>LKR ${Math.round(financials.value10Year).toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td>Capital Appreciation</td>
+                                <td>-</td>
+                                <td>LKR ${Math.round(financials.appreciation5Year).toLocaleString()}</td>
+                                <td>LKR ${Math.round(financials.appreciation10Year).toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td>Rental Income (Total)</td>
+                                <td>LKR ${Math.round(financials.annualRental).toLocaleString()}/year</td>
+                                <td>LKR ${Math.round(financials.annualRental * 5).toLocaleString()}</td>
+                                <td>LKR ${Math.round(financials.annualRental * 10).toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td>Total Return</td>
+                                <td>-</td>
+                                <td>LKR ${Math.round(financials.totalReturn5Year).toLocaleString()}</td>
+                                <td>LKR ${Math.round(financials.totalReturn10Year).toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td>ROI</td>
+                                <td>-</td>
+                                <td>${financials.roi5Year.toFixed(1)}%</td>
+                                <td>${financials.roi10Year.toFixed(1)}%</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Scenario Analysis -->
+                    <div class="report-section">
+                        <h3>📈 Scenario Analysis</h3>
+                        <div class="scenario-grid">
+                            ${scenarios.map(scenario => `
+                                <div class="scenario-card">
+                                    <h5>${scenario.type}</h5>
+                                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">${scenario.description}</p>
+                                    ${Object.entries(scenario.metrics).map(([key, value]) =>
+                                        `<div style="margin: 5px 0;"><strong>${key}:</strong> ${value}</div>`
+                                    ).join('')}
+                                    <div style="margin-top: 10px;">
+                                        <strong>Viability:</strong>
+                                        <span class="risk-level risk-${scenario.viability.toLowerCase()}">${scenario.viability}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Development Opportunities -->
+                    <div class="report-section">
+                        <h3>🏗️ Development & Design Opportunities</h3>
+                        ${this.getDevelopmentOpportunities(data, features)}
+                    </div>
+
+                    <!-- Risk Assessment -->
+                    <div class="report-section">
+                        <h3>⚠️ Risk Assessment</h3>
+                        ${risks.map(risk => `
+                            <div style="margin-bottom: 15px; padding: 10px; background: white; border-radius: 5px;">
+                                <strong>${risk.category}</strong>
+                                <span class="risk-level risk-${risk.level.toLowerCase()}">${risk.level} Risk</span>
+                                <p style="margin: 5px 0; color: #666;">${risk.description}</p>
+                                <p style="margin: 5px 0; color: #28a745;"><strong>Mitigation:</strong> ${risk.mitigation}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Final Recommendation -->
+                    <div class="report-section">
+                        <h3>✅ Final Recommendation</h3>
+                        <div class="recommendation-box">
+                            ${this.generateRecommendation(data, features, financials, scenarios, risks)}
+                        </div>
+                    </div>
+
+                    <button class="export-btn" onclick="window.print()">📄 Export Report</button>
+                `;
+
+                this.outputContent.innerHTML = html;
+            }
+
+            formatFeature(feature) {
+                const featureMap = {
+                    luxury: '✨ Luxury Property',
+                    oceanView: '🌊 Ocean/Sea View',
+                    cityView: '🏙️ City View',
+                    pool: '🏊 Swimming Pool',
+                    garden: '🌳 Garden/Landscaping',
+                    parking: '🚗 Parking Facilities',
+                    security: '🔒 Security Features',
+                    furnished: '🪑 Furnished',
+                    balcony: '🏛️ Balcony/Terrace',
+                    modernDesign: '🎨 Modern Design',
+                    investment: '📊 Investment Focus',
+                    commercial: '🏢 Commercial Potential',
+                    residential: '🏠 Residential',
+                    development: '🏗️ Development Potential'
+                };
+                return featureMap[feature] || feature;
+            }
+
+            formatAge(age) {
+                const ageMap = {
+                    'new': 'Brand New',
+                    '1-5': '1-5 years',
+                    '5-10': '5-10 years',
+                    '10-20': '10-20 years',
+                    '20+': 'Over 20 years'
+                };
+                return ageMap[age] || age;
+            }
+
+            determineInvestmentGrade(financials, features) {
+                if (financials.roi5Year > 50 || features.includes('luxury')) return 'excellent';
+                if (financials.roi5Year > 35) return 'strong';
+                if (financials.roi5Year > 20) return 'good';
+                return 'moderate';
+            }
+
+            getTargetBuyers(data, features) {
+                const buyers = [];
+
+                if (features.includes('luxury')) {
+                    buyers.push('High-net-worth individuals seeking premium properties');
+                    buyers.push('Expatriates and foreign investors');
+                }
+
+                if (features.includes('investment')) {
+                    buyers.push('Buy-to-let investors seeking rental income');
+                    buyers.push('Portfolio diversification seekers');
+                }
+
+                if (data.type === 'apartment') {
+                    buyers.push('Young professionals and couples');
+                    buyers.push('Downsizers seeking low-maintenance living');
+                }
+
+                if (data.type === 'land') {
+                    buyers.push('Developers and construction companies');
+                    buyers.push('Long-term land banking investors');
+                }
+
+                if (features.includes('commercial')) {
+                    buyers.push('Business owners seeking operational space');
+                    buyers.push('Commercial real estate investors');
+                }
+
+                if (buyers.length === 0) {
+                    buyers.push('First-time homebuyers');
+                    buyers.push('Families seeking primary residence');
+                }
+
+                return buyers;
+            }
+
+            getBestUseCases(data, features) {
+                const useCases = [];
+
+                if (data.type === 'land') {
+                    useCases.push('Residential development project');
+                    useCases.push('Boutique villa or resort development');
+                    if (features.includes('commercial')) {
+                        useCases.push('Mixed-use development');
+                    }
+                }
+
+                if (features.includes('luxury') || features.includes('oceanView')) {
+                    useCases.push('High-end Airbnb or vacation rental');
+                    useCases.push('Luxury private residence');
+                }
+
+                if (data.type === 'apartment' || data.type === 'house') {
+                    useCases.push('Long-term rental investment');
+                    useCases.push('Primary residence with appreciation potential');
+                }
+
+                if (features.includes('commercial')) {
+                    useCases.push('Office space or co-working facility');
+                    useCases.push('Retail or hospitality venture');
+                }
+
+                return useCases.length > 0 ? useCases : ['Flexible use based on market demand'];
+            }
+
+            getDevelopmentOpportunities(data, features) {
+                let opportunities = '<ul>';
+
+                if (data.type === 'land') {
+                    opportunities += `
+                        <li><strong>Subdivision Potential:</strong> Explore dividing into smaller plots for individual sale</li>
+                        <li><strong>Villa Cluster:</strong> Develop 3-5 luxury villas with shared amenities</li>
+                        <li><strong>Boutique Resort:</strong> Create small-scale hospitality project</li>
+                        <li><strong>Mixed Development:</strong> Combine residential and commercial elements</li>
+                    `;
+                } else if (data.type === 'house' || data.type === 'villa') {
+                    opportunities += `
+                        <li><strong>Extension Options:</strong> Add additional floors or expand living space</li>
+                        <li><strong>Guest House Addition:</strong> Create separate rental unit for additional income</li>
+                        <li><strong>Modern Upgrades:</strong> Smart home features, solar panels, rainwater harvesting</li>
+                        <li><strong>Landscape Enhancement:</strong> Pool, outdoor entertainment area, gardens</li>
+                    `;
+                } else if (data.type === 'apartment') {
+                    opportunities += `
+                        <li><strong>Interior Renovation:</strong> Modern kitchen, bathrooms, and flooring</li>
+                        <li><strong>Space Optimization:</strong> Open plan conversion, built-in storage</li>
+                        <li><strong>Balcony Enhancement:</strong> Create outdoor living space</li>
+                        <li><strong>Rental Optimization:</strong> Furnish for premium short-term rental market</li>
+                    `;
+                }
+
+                if (features.includes('oceanView')) {
+                    opportunities += `<li><strong>View Maximization:</strong> Redesign to optimize ocean views from key areas</li>`;
+                }
+
+                opportunities += '</ul>';
+                return opportunities;
+            }
+
+            generateRecommendation(data, features, financials, scenarios, risks) {
+                let recommendation = '<h4>Strategic Recommendation</h4>';
+
+                // Best use case determination
+                let bestUse = 'buy-and-hold investment';
+                if (financials.roi5Year > 50) {
+                    bestUse = 'high-yield investment opportunity';
+                } else if (features.includes('luxury') && features.includes('oceanView')) {
+                    bestUse = 'premium short-term rental';
+                } else if (data.type === 'land') {
+                    bestUse = 'development project';
+                }
+
+                recommendation += `<p><strong>Best Use:</strong> This property is ideally suited as a <span class="highlight">${bestUse}</span>
+                    with projected ${financials.roi5Year.toFixed(1)}% returns over 5 years.</p>`;
+
+                recommendation += '<h4>Action Steps</h4><ol>';
+
+                // Price strategy
+                const marketPrice = financials.currentValue;
+                const fairValue = marketPrice * 0.95; // Assume 5% negotiation room
+
+                let pricingContext = '';
+                if (financials.pricePerPerch !== null) {
+                    pricingContext = ` at LKR ${Math.round(financials.pricePerPerch).toLocaleString()} per perch`;
+                } else if (financials.pricePerSqFt !== null) {
+                    pricingContext = ` at LKR ${Math.round(financials.pricePerSqFt).toLocaleString()} per sq ft`;
+                }
+
+                recommendation += `<li><strong>Pricing Strategy:</strong> Current ask of LKR ${marketPrice.toLocaleString()}${pricingContext} appears
+                    ${(financials.pricePerPerch && financials.pricePerPerch > 1000000) || (financials.pricePerSqFt && financials.pricePerSqFt > 50000) ? 'at premium' : 'market-aligned'}.
+                    Target negotiation range: LKR ${Math.round(fairValue).toLocaleString()} - ${Math.round(marketPrice * 0.98).toLocaleString()}</li>`;
+
+                // Due diligence
+                recommendation += '<li><strong>Due Diligence:</strong> Conduct title verification, structural assessment, ';
+                if (data.type === 'land') {
+                    recommendation += 'soil testing, and development approval feasibility';
+                } else {
+                    recommendation += 'building approvals, and utility connections check';
+                }
+                recommendation += '</li>';
+
+                // Finance strategy
+                recommendation += `<li><strong>Financing:</strong> With ${financials.rentalYield.toFixed(2)}% rental yield,
+                    property can support up to 60% loan-to-value ratio comfortably</li>`;
+
+                // Implementation
+                if (bestUse.includes('rental')) {
+                    recommendation += '<li><strong>Implementation:</strong> Budget LKR ' +
+                        Math.round(marketPrice * 0.05).toLocaleString() +
+                        ' for furnishing and marketing to achieve premium rental rates</li>';
+                } else if (bestUse.includes('development')) {
+                    recommendation += '<li><strong>Implementation:</strong> Engage architect for feasibility study and ' +
+                        'obtain preliminary approvals before purchase commitment</li>';
+                }
+
+                recommendation += '</ol>';
+
+                // Risk-adjusted verdict
+                const riskLevel = risks.filter(r => r.level === 'High').length > 0 ? 'moderate' : 'low';
+                recommendation += `<p style="margin-top: 15px; font-weight: 600; color: #667eea;">
+                    <strong>Verdict:</strong> ${financials.roi5Year > 35 ? 'STRONG BUY' : 'CONSIDER'}
+                    - Property offers ${this.determineInvestmentGrade(financials, features)} returns with ${riskLevel} risk profile.
+                    ${features.includes('luxury') ? 'Premium positioning justifies price point.' : 'Solid fundamentals support investment case.'}
+                </p>`;
+
+                return recommendation;
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                window.profiler = new PropertyProfiler();
+                console.log('✅ Property Profiler loaded successfully!');
+
+                // Add a visual confirmation that the app is ready
+                const header = document.querySelector('.header p');
+                if (header) {
+                    header.innerHTML += ' <span style="color: #90EE90;">✓ Ready</span>';
+                }
+            } catch (error) {
+                console.error('❌ Failed to initialize Property Profiler:', error);
+                alert('Error loading the application. Please check the browser console.');
+            }
+        });
+
+        // Test function with sample data
+        function testGeneration() {
+            console.log('Running test with sample data...');
+
+            // Fill form with sample data
+            document.getElementById('description').value = `Luxury 3-bedroom apartment in Colombo 7, spanning 2500 sq ft with an asking price of LKR 35 million.
+
+This stunning property features breathtaking ocean views from the 15th floor, complemented by a private balcony perfect for evening relaxation. The apartment includes a modern fitted kitchen with granite countertops, spacious living areas with floor-to-ceiling windows, and premium bathroom fixtures.
+
+Building amenities include a rooftop swimming pool, fully-equipped gymnasium, 24/7 security with CCTV surveillance, and covered parking for two vehicles. The property was built 5 years ago and has been maintained in excellent condition by the current owners.
+
+Located in the heart of Colombo's most prestigious neighborhood, it's within walking distance to leading international schools, premium shopping centers, fine dining restaurants, and major business districts. The building has only 2 units per floor ensuring privacy and exclusivity.
+
+This property presents an exceptional investment opportunity with high rental demand in the area, currently fetching LKR 150,000-200,000 per month for similar units. Perfect for both end-users seeking a luxury lifestyle and investors looking for premium rental yields.
+
+Additional features include backup power generator, rainwater harvesting system, and smart home capabilities. The building has received green building certification and offers low maintenance costs due to energy-efficient design.`;
+
+            // Trigger generation
+            if (window.profiler) {
+                window.profiler.generateProfile();
+            } else {
+                alert('Profiler not initialized. Please refresh the page.');
+            }
+        }
+    </script>
+</body>
+</html>
