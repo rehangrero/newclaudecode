@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Investment Profiler - Sri Lanka</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --info-color: #2196f3;
+            --danger-color: #f44336;
+            --dark-bg: #1e3c72;
+            --light-bg: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            background: #f8f9fa;
+            padding: 15px 40px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .toolbar button {
+            padding: 10px 20px;
+            font-size: 0.95em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-load {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-export {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-compare {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-clear {
+            background: #dc3545;
+            color: white;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .input-section, .output-section {
+            background: var(--light-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: var(--dark-bg);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Enhanced Textarea */
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .char-count {
+            text-align: right;
+            margin-top: 5px;
+            font-size: 0.85em;
+            color: var(--text-light);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+        }
+
+        .primary-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .secondary-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .secondary-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4);
+        }
+
+        /* Output Section Enhancements */
+        .output-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            min-height: 400px;
+            max-height: 800px;
+            overflow-y: auto;
+            border: 2px solid var(--border-color);
+        }
+
+        .output-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .output-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .output-content::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .output-content h2 {
+            color: var(--dark-bg);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-color);
+            font-size: 1.5em;
+        }
+
+        .output-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .output-content h3 {
+            color: #2a5298;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .output-content p, .output-content li {
+            color: #495057;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .output-content ul, .output-content ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .output-content li {
+            margin-bottom: 8px;
+        }
+
+        /* Info Boxes */
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #fdcb6e;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--info-color);
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .danger-box {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        /* Property Stats Grid */
+        .property-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), #66bb6a);
+            transition: width 0.3s ease;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--dark-bg);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .close-modal:hover {
+            color: var(--danger-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Saved Properties List */
+        .saved-properties {
+            list-style: none;
+            padding: 0;
+        }
+
+        .saved-property-item {
+            background: var(--light-bg);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .saved-property-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .property-item-info h4 {
+            margin: 0 0 5px 0;
+            color: var(--dark-bg);
+        }
+
+        .property-item-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+
+        .property-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .property-item-actions button {
+            padding: 8px 15px;
+            font-size: 0.9em;
+            flex: none;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        /* Financial Calculator */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .calc-input-group {
+            margin-bottom: 15px;
+        }
+
+        .calc-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .calc-input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .calc-input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .calc-result {
+            background: var(--light-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .calc-result h4 {
+            margin: 0 0 10px 0;
+            color: var(--dark-bg);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--dark-bg);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            animation: slideInRight 0.3s;
+            z-index: 2000;
+        }
+
+        .toast.active {
+            display: block;
+        }
+
+        .toast.success {
+            background: var(--success-color);
+        }
+
+        .toast.error {
+            background: var(--danger-color);
+        }
+
+        .toast.warning {
+            background: var(--warning-color);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                justify-content: center;
+            }
+
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 0.95em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .input-section, .output-section {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .property-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .toolbar,
+            .input-section,
+            button,
+            .loading {
+                display: none !important;
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .output-section {
+                box-shadow: none;
+                background: white;
+            }
+
+            .output-content {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="version">v2.0 Enhanced</div>
+            <h1>🏗️ Property Investment Profiler</h1>
+            <p>AI-Powered Property Analysis for Sri Lankan Real Estate Market</p>
+        </div>
+
+        <div class="toolbar">
+            <button class="btn-save" onclick="saveAnalysis()">
+                💾 Save Analysis
+            </button>
+            <button class="btn-load" onclick="openLoadModal()">
+                📂 Load Saved
+            </button>
+            <button class="btn-export" onclick="exportToPDF()">
+                📄 Export PDF
+            </button>
+            <button class="btn-compare" onclick="openCompareModal()">
+                📊 Compare Properties
+            </button>
+            <button class="btn-clear" onclick="clearAll()">
+                🗑️ Clear All
+            </button>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <h2 class="section-title">📋 Property Description</h2>
+                <textarea id="propertyDescription" placeholder="Enter your property details here...
+
+Example formats:
+
+LAND:
+'21 perches in Colombo 5, asking 19 million per perch'
+'Land for sale in Galle, 45 perches at 5 million per perch'
+
+HOUSE:
+'House in Colombo 7, 2500 sq ft built on 15 perch land, asking 120 million'
+'3 bedroom house, 1800 sq ft, land 12 perches, price 85 million'
+
+APARTMENT:
+'Luxury 3BR apartment in Colombo 3, 1500 sq ft, 45 million'
+'2 bedroom unit at Independence Square, 1200 sq ft, price 38 million'
+
+Be as detailed as possible!" oninput="updateCharCount()"></textarea>
+
+                <div class="char-count" id="charCount">0 characters</div>
+
+                <div class="button-group">
+                    <button class="primary-btn" onclick="generateProfile()" id="generateBtn">
+                        🚀 Generate Profile
+                    </button>
+                    <button class="secondary-btn" onclick="loadSampleData()">
+                        📝 Load Sample
+                    </button>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <h2 class="section-title">📊 Investment Analysis</h2>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 15px; font-weight: 600;">Analyzing property...</p>
+                    <p style="font-size: 0.9em; color: var(--text-light);">Processing market data and calculations</p>
+                </div>
+                <div class="output-content" id="output">
+                    <div style="text-align: center; color: #adb5bd; padding: 80px 20px;">
+                        <div style="font-size: 4em; margin-bottom: 20px;">🏘️</div>
+                        <p style="font-size: 1.1em; font-weight: 600; margin-bottom: 10px;">
+                            Ready to Analyze Your Property Investment
+                        </p>
+                        <p style="font-size: 0.95em;">
+                            Enter property details and click "Generate Profile" to receive comprehensive investment analysis
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Saved Properties Modal -->
+    <div id="loadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📂 Load Saved Analysis</h2>
+                <button class="close-modal" onclick="closeLoadModal()">×</button>
+            </div>
+            <div id="savedPropertiesList">
+                <p style="text-align: center; color: var(--text-light); padding: 20px;">
+                    No saved properties found
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compare Properties Modal -->
+    <div id="compareModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h2>📊 Compare Properties</h2>
+                <button class="close-modal" onclick="closeCompareModal()">×</button>
+            </div>
+            <div id="comparisonContent">
+                <p style="text-align: center; color: var(--text-light); padding: 20px;">
+                    Save at least 2 properties to compare them
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mortgage Calculator Modal -->
+    <div id="mortgageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏦 Mortgage Calculator</h2>
+                <button class="close-modal" onclick="closeMortgageModal()">×</button>
+            </div>
+            <div class="calculator-grid">
+                <div class="calc-input-group">
+                    <label>Property Value (LKR)</label>
+                    <input type="number" id="propValue" placeholder="50,000,000" oninput="calculateMortgage()">
+                </div>
+                <div class="calc-input-group">
+                    <label>Down Payment (%)</label>
+                    <input type="number" id="downPayment" value="20" placeholder="20" oninput="calculateMortgage()">
+                </div>
+                <div class="calc-input-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="interestRate" value="12" step="0.1" placeholder="12" oninput="calculateMortgage()">
+                </div>
+                <div class="calc-input-group">
+                    <label>Loan Period (years)</label>
+                    <input type="number" id="loanPeriod" value="20" placeholder="20" oninput="calculateMortgage()">
+                </div>
+            </div>
+            <div class="calc-result" id="mortgageResult">
+                <h4>Monthly Payment: LKR 0</h4>
+                <p>Total Interest: LKR 0</p>
+                <p>Total Payment: LKR 0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ============================================================================
+        // STATE MANAGEMENT
+        // ============================================================================
+        let currentAnalysis = null;
+        let savedProperties = [];
+
+        // Load saved properties from localStorage on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedProperties();
+        });
+
+        // ============================================================================
+        // EXTRACTION FUNCTIONS (Enhanced)
+        // ============================================================================
+
+        function extractPropertyType(text) {
+            const lowerText = text.toLowerCase();
+
+            // PRIORITY 1: Explicit declarations
+            if (/^house\s+for\s+sale/i.test(text) || /^house\s+in/i.test(text)) return 'House';
+            if (/^apartment\s+for\s+sale/i.test(text) || /^apartment\s+in/i.test(text)) return 'Apartment';
+            if (/^land\s+for\s+sale/i.test(text) || /^land\s+in/i.test(text)) return 'Land';
+
+            // PRIORITY 2: Strong contextual indicators for HOUSE
+            const houseIndicators = [
+                /two\s+stor(?:y|ey)/i, /three\s+stor(?:y|ey)/i, /single\s+stor(?:y|ey)/i,
+                /\d+\s+stor(?:y|ey)/i, /servant\s+room/i, /servant\s+toilet/i,
+                /surrounding\s+wall/i, /front\s+garden/i, /land(?:scaping|scape)/i,
+                /perch(?:es)?\s*[:]\s*\d+/i, /no\.?\s+of\s+perches/i,
+                /built\s+on.*perch/i, /house\s+on.*perch/i
+            ];
+
+            let houseScore = houseIndicators.filter(indicator => indicator.test(text)).length;
+            if (houseScore >= 2) return 'House';
+
+            // PRIORITY 3: Check for land extent + building = House
+            const hasPerches = /\d+(?:\.\d+)?\s*perch/i.test(text);
+            const hasSqft = /\d+(?:,\d{3})*\s*(?:sq\.?\s*ft|sqft)/i.test(text);
+            if (hasPerches && hasSqft) return 'House';
+
+            // PRIORITY 4: Apartment indicators
+            if (houseScore === 0) {
+                if (lowerText.includes('apartment') || lowerText.includes('flat') ||
+                    lowerText.includes('condo') || lowerText.includes('condominium')) {
+                    return 'Apartment';
+                }
+                if (/unit\s+\d+/i.test(text) || /floor\s+\d+/i.test(text) || /#\d+/.test(text)) {
+                    return 'Apartment';
+                }
+            }
+
+            // PRIORITY 5: Standard keyword matching
+            if (lowerText.includes('house') || lowerText.includes('bungalow') ||
+                lowerText.includes('villa') || lowerText.includes('residence')) return 'House';
+
+            if (lowerText.includes('land') || lowerText.includes('plot') || lowerText.includes('site')) {
+                if (!hasSqft && !lowerText.includes('bedroom')) return 'Land';
+            }
+
+            if (lowerText.includes('commercial') || lowerText.includes('office') ||
+                lowerText.includes('shop') || lowerText.includes('warehouse')) return 'Commercial';
+
+            // Default
+            if ((/\d+\s*bed/i.test(text) || /bedroom/i.test(text)) && hasPerches) return 'House';
+            if (/\d+\s*bed/i.test(text) || /bedroom/i.test(text)) return 'Apartment';
+
+            return 'Property';
+        }
+
+        function extractLocation(text) {
+            const locations = [
+                'colombo 1', 'colombo 2', 'colombo 3', 'colombo 4', 'colombo 5', 'colombo 6', 'colombo 7',
+                'colombo 8', 'colombo 9', 'colombo 10', 'colombo 11', 'colombo 12', 'colombo 13', 'colombo 14', 'colombo 15',
+                'fort', 'slave island', 'kollupitiya', 'bambalapitiya', 'havelock', 'wellawatte', 'dehiwala',
+                'mount lavinia', 'borella', 'maradana', 'cinnamon gardens', 'independence square',
+                'galle', 'kandy', 'negombo', 'jaffna', 'gampaha', 'kalutara', 'matara', 'batticaloa',
+                'trincomalee', 'anuradhapura', 'polonnaruwa', 'ratnapura', 'nuwara eliya', 'ella',
+                'mirissa', 'unawatuna', 'hikkaduwa', 'bentota', 'tangalle', 'arugam bay',
+                'rajagiriya', 'nugegoda', 'maharagama', 'kotte', 'malabe', 'kaduwela',
+                'moratuwa', 'panadura', 'horana', 'piliyandala', 'battaramulla', 'thalawathugoda'
+            ];
+
+            const lowerText = text.toLowerCase();
+
+            for (const loc of locations) {
+                if (lowerText.includes(loc)) {
+                    return loc.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                }
+            }
+
+            const roadMatch = text.match(/([A-Z][a-z]+\s+(road|rd|place|mawatha|street|st|avenue|ave|lane))(?:\s|,|$)/i);
+            if (roadMatch) return roadMatch[1].trim();
+
+            return 'Colombo Area';
+        }
+
+        function extractSize(text, propertyType) {
+            let sizes = {};
+
+            // Extract square footage
+            const sqftPatterns = [
+                /(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:sq\.?\s*ft|square\s*feet|sqft|sft)/i,
+                /(\d+(?:,\d{3})*(?:\.\d+)?)\s*ft/i,
+                /building\s*(?:area|size)[:\s]+(\d+(?:,\d{3})*)/i,
+                /built\s*(?:up\s*)?area[:\s]+(\d+(?:,\d{3})*)/i,
+                /size\s+of\s+house[:\s]+(\d+(?:,\d{3})*)\s*sq/i,
+                /house\s+size[:\s]+(\d+(?:,\d{3})*)/i
+            ];
+
+            for (const pattern of sqftPatterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    sizes.sqft = parseFloat(match[1].replace(/,/g, ''));
+                    break;
+                }
+            }
+
+            // Extract perches
+            const perchPatterns = [
+                /(\d+(?:\.\d+)?)\s*perch(?:es)?/i,
+                /land[:\s]+(\d+(?:\.\d+)?)\s*p\b/i,
+                /(\d+(?:\.\d+)?)\s*p\b.*perch/i,
+                /on\s+(\d+(?:\.\d+)?)\s*perch/i,
+                /(\d+(?:\.\d+)?)\s*perch\s+land/i,
+                /no\.?\s+of\s+perches\s*[:]\s*(\d+(?:\.\d+)?)/i,
+                /perches\s*[:]\s*(\d+(?:\.\d+)?)/i
+            ];
+
+            for (const pattern of perchPatterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    sizes.perches = parseFloat(match[1]);
+                    break;
+                }
+            }
+
+            // Extract acres
+            const acreMatch = text.match(/(\d+(?:\.\d+)?)\s*acres?/i);
+            if (acreMatch) {
+                sizes.acres = parseFloat(acreMatch[1]);
+                sizes.perches = sizes.acres * 160;
+            }
+
+            // Estimate from bedrooms if no size given
+            if (!sizes.sqft && !sizes.perches) {
+                const bedroomMatch = text.match(/(\d+)\s*(?:bed|br|bedroom)/i);
+                if (bedroomMatch) {
+                    const bedrooms = parseInt(bedroomMatch[1]);
+                    if (propertyType === 'Apartment') {
+                        sizes.sqft = 600 + (bedrooms * 400);
+                    } else if (propertyType === 'House') {
+                        sizes.sqft = 1200 + (bedrooms * 500);
+                        sizes.perches = 8 + (bedrooms * 2);
+                    }
+                }
+            }
+
+            return sizes;
+        }
+
+        function extractPrice(text) {
+            let prices = {};
+
+            // Extract TOTAL PRICE
+            const totalPricePatterns = [
+                /(?:price|asking|total|value)[:\s]+(?:lkr|rs\.?|rupees)?\s*(\d+(?:\.\d+)?)\s*(?:million|mil|m\b)/i,
+                /(?:lkr|rs\.?|rupees)\s*(\d+(?:\.\d+)?)\s*(?:million|mil|m\b)/i,
+                /(\d+(?:\.\d+)?)\s*(?:million|mil|m\b)(?!\s*per)/i,
+                /(?:price|asking)[:\s]+(\d+(?:,\d{3})*)/i,
+                /price\s+(\d+(?:\.\d+)?)\s*million/i
+            ];
+
+            for (const pattern of totalPricePatterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    let value = parseFloat(match[1].replace(/,/g, ''));
+                    if (text.match(/million|mil|m\b/i)) {
+                        value = value * 1000000;
+                    }
+                    prices.totalPrice = value;
+                    break;
+                }
+            }
+
+            // Extract PER PERCH PRICE
+            const perPerchPatterns = [
+                /(\d+(?:\.\d+)?)\s*(?:million|mil|m)\s+per\s+perch/i,
+                /per\s+perch[:\s]+(?:lkr|rs\.?)?\s*(\d+(?:\.\d+)?)\s*(?:million|mil|m)?/i,
+                /(\d+(?:\.\d+)?)\s*(?:million|mil|m)?\s*\/\s*perch/i,
+                /@\s*(?:lkr|rs\.?)?\s*(\d+(?:\.\d+)?)\s*(?:million|mil|m)?\s+per\s+perch/i
+            ];
+
+            for (const pattern of perPerchPatterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    let value = parseFloat(match[1]);
+                    const fullMatch = match[0];
+                    if (fullMatch.match(/million|mil|m\b/i)) {
+                        value = value * 1000000;
+                    }
+                    prices.perPerch = value;
+                    break;
+                }
+            }
+
+            // Extract PER SQ FT PRICE
+            const perSqftPatterns = [
+                /(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:per|\/)\s*(?:sq\.?\s*ft|sqft|square\s*feet)/i,
+                /(?:sq\.?\s*ft|sqft|square\s*feet)\s*[@:]\s*(?:lkr|rs\.?)?\s*(\d+(?:,\d{3})*(?:\.\d+)?)/i,
+                /building\s*(?:rate|price|value)[:\s]+(?:lkr|rs\.?)?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:per\s*)?(?:sq\.?\s*ft|sqft)?/i,
+                /construction\s*(?:rate|cost)[:\s]+(?:lkr|rs\.?)?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:per\s*)?(?:sq\.?\s*ft|sqft)?/i,
+                /(?:@|at)\s*(?:lkr|rs\.?)?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:per\s*)?(?:sq\.?\s*ft|sqft)/i
+            ];
+
+            for (const pattern of perSqftPatterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    prices.perSqft = parseFloat(match[1].replace(/,/g, ''));
+                    break;
+                }
+            }
+
+            return prices;
+        }
+
+        function extractAge(text) {
+            const lowerText = text.toLowerCase();
+
+            const agePatterns = [
+                /(\d+)\s*(?:years?\s*old|yrs?\s*old)/i,
+                /built\s+in\s+(\d{4})/i,
+                /age[:\s]+(\d+)/i,
+                /(\d+)\s*year\s+old/i
+            ];
+
+            for (const pattern of agePatterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    const value = parseInt(match[1]);
+                    if (value > 1900 && value < 2100) {
+                        return `${new Date().getFullYear() - value} years`;
+                    }
+                    return `${value} years`;
+                }
+            }
+
+            if (lowerText.includes('new') || lowerText.includes('brand new') || lowerText.includes('under construction')) {
+                return 'New / Under 2 years';
+            }
+            if (lowerText.includes('modern') || lowerText.includes('recently built')) {
+                return '2-5 years';
+            }
+            if (lowerText.includes('renovated') || lowerText.includes('refurbished')) {
+                return 'Renovated';
+            }
+            if (lowerText.includes('old') || lowerText.includes('vintage') || lowerText.includes('colonial')) {
+                return '20+ years';
+            }
+
+            return 'Not specified';
+        }
+
+        function extractCondition(text) {
+            const lowerText = text.toLowerCase();
+
+            if (lowerText.includes('excellent') || lowerText.includes('pristine') || lowerText.includes('mint')) {
+                return 'Excellent';
+            }
+            if (lowerText.includes('brand new') || lowerText.includes('newly built') || lowerText.includes('new')) {
+                return 'Brand New';
+            }
+            if (lowerText.includes('good condition') || lowerText.includes('well maintained') || lowerText.includes('good')) {
+                return 'Good';
+            }
+            if (lowerText.includes('fair') || lowerText.includes('average')) {
+                return 'Fair';
+            }
+            if (lowerText.includes('needs renovation') || lowerText.includes('needs repair') || lowerText.includes('fixer')) {
+                return 'Needs Renovation';
+            }
+            if (lowerText.includes('poor') || lowerText.includes('dilapidated')) {
+                return 'Poor';
+            }
+
+            return 'Good (assumed)';
+        }
+
+        function extractFeatures(text) {
+            const features = [];
+            const lowerText = text.toLowerCase();
+
+            // Bedrooms
+            const bedroomMatch = text.match(/(\d+)\s*(?:bed|br|bedroom)/i);
+            if (bedroomMatch) features.push(`${bedroomMatch[1]} Bedrooms`);
+
+            // Stories
+            const storyMatch = text.match(/(two|three|single|one|\d+)\s+stor(?:y|ey)/i);
+            if (storyMatch) {
+                const storyMap = {'one': '1', 'single': '1', 'two': '2', 'three': '3'};
+                const storyCount = storyMap[storyMatch[1].toLowerCase()] || storyMatch[1];
+                features.push(`${storyCount} Story`);
+            }
+
+            // Bathrooms
+            const bathroomMatch = text.match(/(\d+)\s*(?:bath|bathroom)/i);
+            if (bathroomMatch) features.push(`${bathroomMatch[1]} Bathrooms`);
+
+            // Parking
+            const parkingMatch = text.match(/(\d+)\s*(?:car\s*)?park(?:ing)?/i);
+            if (parkingMatch) features.push(`${parkingMatch[1]} Car Parking`);
+
+            // Amenities
+            const amenities = [
+                'pool', 'swimming pool', 'gym', 'fitness', 'security', 'elevator', 'lift',
+                'balcony', 'terrace', 'garden', 'roof deck', 'servant quarters', 'servant room',
+                'air conditioning', 'ac', 'furnished', 'semi-furnished',
+                'sea view', 'ocean view', 'lake view', 'city view',
+                'hot water', 'solar', 'solar power', 'landscaping',
+                'varenda', 'verandah', 'pantry', 'dining', 'living hall'
+            ];
+
+            amenities.forEach(amenity => {
+                if (lowerText.includes(amenity)) {
+                    features.push(amenity.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '));
+                }
+            });
+
+            return [...new Set(features)];
+        }
+
+        // ============================================================================
+        // FORMATTING FUNCTIONS
+        // ============================================================================
+
+        function formatCurrency(amount) {
+            if (amount >= 10000000) {
+                return `LKR ${(amount / 1000000).toFixed(2)} Million`;
+            } else if (amount >= 1000000) {
+                return `LKR ${(amount / 1000000).toFixed(2)} Million`;
+            } else if (amount >= 100000) {
+                return `LKR ${(amount / 100000).toFixed(2)} Lakhs`;
+            } else {
+                return `LKR ${amount.toLocaleString()}`;
+            }
+        }
+
+        function formatPerUnitPrice(amount) {
+            return `LKR ${Math.round(amount).toLocaleString()}`;
+        }
+
+        // ============================================================================
+        // CALCULATION FUNCTIONS (Enhanced with ROI, IRR, etc.)
+        // ============================================================================
+
+        function calculatePropertyValue(propertyType, sizes, prices) {
+            let calculations = {
+                landValue: 0,
+                buildingValue: 0,
+                totalValue: 0,
+                breakdown: [],
+                roi: {},
+                cashFlow: []
+            };
+
+            // LAND CALCULATIONS
+            if (propertyType === 'Land') {
+                if (sizes.perches && prices.perPerch) {
+                    calculations.landValue = sizes.perches * prices.perPerch;
+                    calculations.totalValue = calculations.landValue;
+                    calculations.breakdown.push(`Land: ${sizes.perches} perches × ${formatPerUnitPrice(prices.perPerch)}/perch = ${formatCurrency(calculations.landValue)}`);
+                } else if (prices.totalPrice) {
+                    calculations.landValue = prices.totalPrice;
+                    calculations.totalValue = prices.totalPrice;
+                    calculations.breakdown.push(`Land Value: ${formatCurrency(prices.totalPrice)}`);
+
+                    if (sizes.perches) {
+                        const impliedPerPerch = prices.totalPrice / sizes.perches;
+                        calculations.breakdown.push(`Implied Rate: ${formatPerUnitPrice(impliedPerPerch)}/perch`);
+                    }
+                }
+            }
+
+            // HOUSE CALCULATIONS
+            else if (propertyType === 'House') {
+                if (sizes.perches && prices.perPerch) {
+                    calculations.landValue = sizes.perches * prices.perPerch;
+                    calculations.breakdown.push(`Land: ${sizes.perches} perches × ${formatPerUnitPrice(prices.perPerch)}/perch = ${formatCurrency(calculations.landValue)}`);
+                } else if (sizes.perches && prices.totalPrice) {
+                    calculations.landValue = prices.totalPrice * 0.4;
+                    const impliedPerPerch = calculations.landValue / sizes.perches;
+                    calculations.breakdown.push(`Land: ${sizes.perches} perches @ ~${formatPerUnitPrice(impliedPerPerch)}/perch = ${formatCurrency(calculations.landValue)}`);
+                }
+
+                if (sizes.sqft && prices.perSqft) {
+                    calculations.buildingValue = sizes.sqft * prices.perSqft;
+                    calculations.breakdown.push(`Building: ${sizes.sqft.toLocaleString()} sq.ft × ${formatPerUnitPrice(prices.perSqft)}/sq.ft = ${formatCurrency(calculations.buildingValue)}`);
+                } else if (sizes.sqft && prices.totalPrice) {
+                    calculations.buildingValue = prices.totalPrice * 0.6;
+                    const impliedPerSqft = calculations.buildingValue / sizes.sqft;
+                    calculations.breakdown.push(`Building: ${sizes.sqft.toLocaleString()} sq.ft @ ~${formatPerUnitPrice(impliedPerSqft)}/sq.ft = ${formatCurrency(calculations.buildingValue)}`);
+                }
+
+                calculations.totalValue = calculations.landValue + calculations.buildingValue;
+                if (prices.totalPrice && calculations.totalValue === 0) {
+                    calculations.totalValue = prices.totalPrice;
+                    calculations.breakdown.push(`Total Property Value: ${formatCurrency(prices.totalPrice)}`);
+                } else if (calculations.totalValue > 0) {
+                    calculations.breakdown.push(`TOTAL: ${formatCurrency(calculations.totalValue)}`);
+                }
+            }
+
+            // APARTMENT CALCULATIONS
+            else if (propertyType === 'Apartment') {
+                if (sizes.sqft && prices.perSqft) {
+                    calculations.buildingValue = sizes.sqft * prices.perSqft;
+                    calculations.totalValue = calculations.buildingValue;
+                    calculations.breakdown.push(`${sizes.sqft.toLocaleString()} sq.ft × ${formatPerUnitPrice(prices.perSqft)}/sq.ft = ${formatCurrency(calculations.totalValue)}`);
+                } else if (prices.totalPrice) {
+                    calculations.buildingValue = prices.totalPrice;
+                    calculations.totalValue = prices.totalPrice;
+                    calculations.breakdown.push(`Total Value: ${formatCurrency(prices.totalPrice)}`);
+
+                    if (sizes.sqft) {
+                        const impliedPerSqft = prices.totalPrice / sizes.sqft;
+                        calculations.breakdown.push(`Implied Rate: ${formatPerUnitPrice(impliedPerSqft)}/sq.ft`);
+                    }
+                }
+            }
+
+            // Calculate ROI projections
+            if (calculations.totalValue > 0) {
+                calculations.roi = calculateROI(calculations.totalValue, propertyType);
+                calculations.cashFlow = calculateCashFlow(calculations.totalValue, propertyType);
+            }
+
+            return calculations;
+        }
+
+        function calculateROI(propertyValue, propertyType) {
+            const appreciationRates = {
+                'Land': 0.12,
+                'House': 0.10,
+                'Apartment': 0.08,
+                'Commercial': 0.09
+            };
+
+            const rentalYields = {
+                'House': 0.07,
+                'Apartment': 0.08,
+                'Commercial': 0.10
+            };
+
+            const rate = appreciationRates[propertyType] || 0.10;
+            const rental = rentalYields[propertyType] || 0;
+
+            return {
+                year1: propertyValue * (1 + rate),
+                year3: propertyValue * Math.pow(1 + rate, 3),
+                year5: propertyValue * Math.pow(1 + rate, 5),
+                year10: propertyValue * Math.pow(1 + rate, 10),
+                annualAppreciation: rate * 100,
+                rentalYield: rental * 100,
+                monthlyRental: rental > 0 ? propertyValue * rental / 12 : 0
+            };
+        }
+
+        function calculateCashFlow(propertyValue, propertyType) {
+            const rentalYields = {
+                'House': 0.07,
+                'Apartment': 0.08,
+                'Commercial': 0.10
+            };
+
+            const rental = rentalYields[propertyType] || 0;
+            if (rental === 0) return [];
+
+            const monthlyRental = propertyValue * rental / 12;
+            const maintenance = monthlyRental * 0.15; // 15% for maintenance
+            const netMonthly = monthlyRental - maintenance;
+
+            return [
+                { year: 1, rental: monthlyRental * 12, maintenance: maintenance * 12, net: netMonthly * 12 },
+                { year: 3, rental: monthlyRental * 12 * 3, maintenance: maintenance * 12 * 3, net: netMonthly * 12 * 3 },
+                { year: 5, rental: monthlyRental * 12 * 5, maintenance: maintenance * 12 * 5, net: netMonthly * 12 * 5 },
+                { year: 10, rental: monthlyRental * 12 * 10, maintenance: maintenance * 12 * 10, net: netMonthly * 12 * 10 }
+            ];
+        }
+
+        // ============================================================================
+        // PROFILE GENERATION
+        // ============================================================================
+
+        function generateProfile() {
+            const description = document.getElementById('propertyDescription').value.trim();
+
+            if (!description) {
+                showToast('Please enter property details first!', 'warning');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('output').style.display = 'none';
+            document.getElementById('generateBtn').disabled = true;
+
+            // Simulate processing time (realistic AI processing delay)
+            setTimeout(() => {
+                try {
+                    // Extract all information
+                    const propertyType = extractPropertyType(description);
+                    const location = extractLocation(description);
+                    const sizes = extractSize(description, propertyType);
+                    const prices = extractPrice(description);
+                    const age = extractAge(description);
+                    const condition = extractCondition(description);
+                    const features = extractFeatures(description);
+
+                    // Calculate values
+                    const calculations = calculatePropertyValue(propertyType, sizes, prices);
+
+                    // Store current analysis
+                    currentAnalysis = {
+                        description,
+                        propertyType,
+                        location,
+                        sizes,
+                        prices,
+                        age,
+                        condition,
+                        features,
+                        calculations,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    // Generate comprehensive output
+                    const output = generateAnalysisHTML(currentAnalysis);
+
+                    // Display results
+                    document.getElementById('loading').classList.remove('active');
+                    document.getElementById('output').style.display = 'block';
+                    document.getElementById('output').innerHTML = output;
+                    document.getElementById('generateBtn').disabled = false;
+
+                    showToast('Analysis completed successfully!', 'success');
+
+                } catch (error) {
+                    console.error('Error generating profile:', error);
+                    document.getElementById('loading').classList.remove('active');
+                    document.getElementById('output').style.display = 'block';
+                    document.getElementById('output').innerHTML = `
+                        <div class="danger-box">
+                            <h3>⚠️ Error Processing Property</h3>
+                            <p>An error occurred while analyzing the property. Please check your input and try again.</p>
+                            <p style="font-size: 0.9em; color: var(--text-light);">${error.message}</p>
+                        </div>
+                    `;
+                    document.getElementById('generateBtn').disabled = false;
+                    showToast('Error processing property', 'error');
+                }
+            }, 1500);
+        }
+
+        function generateAnalysisHTML(analysis) {
+            const { propertyType, location, sizes, prices, age, condition, features, calculations } = analysis;
+
+            let html = `
+                <div class="info-box" style="margin-bottom: 20px; background: #e8f4f8; border-left-color: #17a2b8;">
+                    <h3>🔍 Extraction Summary</h3>
+                    <p><strong>Property Type:</strong> ${propertyType}</p>
+                    ${sizes.sqft ? `<p><strong>Built Area:</strong> ${sizes.sqft.toLocaleString()} sq.ft</p>` : ''}
+                    ${sizes.perches ? `<p><strong>Land Extent:</strong> ${sizes.perches} perches</p>` : ''}
+                    ${prices.totalPrice ? `<p><strong>Asking Price:</strong> ${formatCurrency(prices.totalPrice)}</p>` : ''}
+                    ${prices.perPerch ? `<p><strong>Per Perch Rate:</strong> ${formatPerUnitPrice(prices.perPerch)}/perch</p>` : ''}
+                    ${prices.perSqft ? `<p><strong>Per Sq.Ft Rate:</strong> ${formatPerUnitPrice(prices.perSqft)}/sq.ft</p>` : ''}
+                </div>
+
+                <h2>📋 EXECUTIVE SUMMARY</h2>
+
+                <div class="property-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Property Type</div>
+                        <div class="stat-value">${propertyType}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Location</div>
+                        <div class="stat-value">${location}</div>
+                    </div>
+                    ${sizes.sqft ? `<div class="stat-card">
+                        <div class="stat-label">Built Area</div>
+                        <div class="stat-value">${sizes.sqft.toLocaleString()} sq.ft</div>
+                    </div>` : ''}
+                    ${sizes.perches ? `<div class="stat-card">
+                        <div class="stat-label">Land Extent</div>
+                        <div class="stat-value">${sizes.perches} perches</div>
+                    </div>` : ''}
+                    ${calculations.totalValue > 0 ? `<div class="stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                        <div class="stat-label">Estimated Value</div>
+                        <div class="stat-value">${formatCurrency(calculations.totalValue)}</div>
+                    </div>` : ''}
+                </div>
+            `;
+
+            // Add value breakdown
+            if (calculations.breakdown.length > 0) {
+                html += `
+                    <h2>💰 VALUE BREAKDOWN</h2>
+                    <div class="success-box">
+                        ${calculations.breakdown.map(line => `<p><strong>${line}</strong></p>`).join('')}
+                    </div>
+                `;
+            }
+
+            // Add ROI projections
+            if (calculations.roi && calculations.roi.year1) {
+                html += `
+                    <h2>📈 INVESTMENT PROJECTIONS</h2>
+
+                    <div class="info-box">
+                        <h3>Capital Appreciation Forecast</h3>
+                        <p><strong>Annual Appreciation Rate:</strong> ${calculations.roi.annualAppreciation.toFixed(1)}%</p>
+                        <div style="margin-top: 15px;">
+                            <p>1 Year: ${formatCurrency(calculations.roi.year1)} <span style="color: var(--success-color);">(+${formatCurrency(calculations.roi.year1 - calculations.totalValue)})</span></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${((calculations.roi.year1 - calculations.totalValue) / calculations.totalValue * 100)}%"></div>
+                            </div>
+
+                            <p>3 Years: ${formatCurrency(calculations.roi.year3)} <span style="color: var(--success-color);">(+${formatCurrency(calculations.roi.year3 - calculations.totalValue)})</span></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${((calculations.roi.year3 - calculations.totalValue) / calculations.totalValue * 100)}%"></div>
+                            </div>
+
+                            <p>5 Years: ${formatCurrency(calculations.roi.year5)} <span style="color: var(--success-color);">(+${formatCurrency(calculations.roi.year5 - calculations.totalValue)})</span></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${Math.min(((calculations.roi.year5 - calculations.totalValue) / calculations.totalValue * 100), 100)}%"></div>
+                            </div>
+
+                            <p>10 Years: ${formatCurrency(calculations.roi.year10)} <span style="color: var(--success-color);">(+${formatCurrency(calculations.roi.year10 - calculations.totalValue)})</span></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (calculations.roi.rentalYield > 0) {
+                    html += `
+                        <div class="success-box">
+                            <h3>Rental Income Potential</h3>
+                            <p><strong>Expected Rental Yield:</strong> ${calculations.roi.rentalYield.toFixed(1)}% annually</p>
+                            <p><strong>Monthly Rental:</strong> ${formatCurrency(calculations.roi.monthlyRental)}</p>
+                            <p><strong>Annual Rental Income:</strong> ${formatCurrency(calculations.roi.monthlyRental * 12)}</p>
+
+                            <h4 style="margin-top: 15px; color: var(--dark-bg);">Cumulative Rental Income</h4>
+                            ${calculations.cashFlow.map(cf => `
+                                <p><strong>${cf.year} Year${cf.year > 1 ? 's' : ''}:</strong> ${formatCurrency(cf.net)} (after ${formatCurrency(cf.maintenance)} maintenance)</p>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }
+
+            // Add property overview
+            html += `
+                <h2>🏘️ PROPERTY OVERVIEW</h2>
+
+                <h3>Basic Information</h3>
+                <ul>
+                    <li><strong>Property Type:</strong> ${propertyType}</li>
+                    <li><strong>Location:</strong> ${location}</li>
+                    ${sizes.sqft ? `<li><strong>Built Area:</strong> ${sizes.sqft.toLocaleString()} square feet</li>` : ''}
+                    ${sizes.perches ? `<li><strong>Land Extent:</strong> ${sizes.perches} perches${sizes.acres ? ` (${sizes.acres} acres)` : ''}</li>` : ''}
+                    <li><strong>Age:</strong> ${age}</li>
+                    <li><strong>Condition:</strong> ${condition}</li>
+                </ul>
+
+                ${features.length > 0 ? `
+                <h3>Key Features</h3>
+                <ul>
+                    ${features.map(f => `<li>${f}</li>`).join('')}
+                </ul>
+                ` : ''}
+            `;
+
+            // Add market positioning and recommendations
+            html += generateMarketAnalysis(propertyType, location, calculations, condition, age, sizes);
+
+            // Add action buttons
+            html += `
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--border-color);">
+                    <div class="button-group">
+                        <button class="primary-btn" onclick="openMortgageCalculator(${calculations.totalValue})">
+                            🏦 Mortgage Calculator
+                        </button>
+                        <button class="secondary-btn" onclick="saveAnalysis()">
+                            💾 Save This Analysis
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function generateMarketAnalysis(propertyType, location, calculations, condition, age, sizes) {
+            let html = `<h2>🎯 MARKET ANALYSIS</h2>`;
+
+            // Market positioning
+            html += `
+                <h3>Target Buyer Profile</h3>
+                <ul>
+            `;
+
+            if (propertyType === 'Land') {
+                html += `
+                    <li><strong>Developers:</strong> High potential for residential or commercial development</li>
+                    <li><strong>Investors:</strong> Land banking strategy for capital appreciation</li>
+                    <li><strong>End Users:</strong> Custom home construction opportunity</li>
+                `;
+            } else if (propertyType === 'House') {
+                html += `
+                    <li><strong>Families:</strong> Primary residence with ${sizes.perches ? 'private land' : 'good space'}</li>
+                    <li><strong>Investors:</strong> Rental income or future development</li>
+                    <li><strong>High-net-worth individuals:</strong> Lifestyle property in ${location}</li>
+                `;
+            } else if (propertyType === 'Apartment') {
+                html += `
+                    <li><strong>Young Professionals:</strong> Convenient city living with amenities</li>
+                    <li><strong>Small Families:</strong> Modern, low-maintenance lifestyle</li>
+                    <li><strong>Foreign Investors:</strong> Turnkey investment opportunity</li>
+                `;
+            }
+
+            html += `</ul>`;
+
+            // Risk assessment
+            html += `
+                <h2>⚠️ RISK ASSESSMENT</h2>
+
+                <div class="warning-box">
+                    <h3>Key Considerations</h3>
+                    <ul>
+                        <li><strong>Market Liquidity:</strong> ${propertyType === 'Apartment' ? 'High - Quick resale potential (3-6 months)' : 'Moderate - May require 6-12 months to sell'}</li>
+                        <li><strong>Economic Factors:</strong> Interest rate changes, currency fluctuation, economic growth</li>
+                        <li><strong>Location Risk:</strong> Future developments in ${location} may impact value</li>
+                        ${condition.toLowerCase().includes('needs') || age.includes('20+') ? '<li><strong>Renovation Cost:</strong> Factor in additional capital for improvements</li>' : ''}
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Legal Due Diligence</h4>
+                    <ul>
+                        <li>Verify clear title and ownership chain</li>
+                        <li>Check for encumbrances, mortgages, or liens</li>
+                        <li>Confirm zoning and permitted use</li>
+                        <li>Review all statutory approvals</li>
+                        ${propertyType !== 'Apartment' ? '<li>Conduct boundary survey</li>' : ''}
+                    </ul>
+                </div>
+            `;
+
+            // Final recommendation
+            html += `
+                <h2>✅ INVESTMENT RECOMMENDATION</h2>
+
+                <div class="highlight">
+                    <h3>Strategic Assessment</h3>
+            `;
+
+            if (calculations.totalValue > 0 && calculations.roi.year5) {
+                const totalReturn5yr = calculations.roi.year5 - calculations.totalValue;
+                const returnPercent = (totalReturn5yr / calculations.totalValue * 100).toFixed(1);
+
+                html += `
+                    <p><strong>5-Year Projected Return:</strong> ${formatCurrency(totalReturn5yr)} (${returnPercent}%)</p>
+                `;
+
+                if (calculations.roi.monthlyRental > 0) {
+                    const rentalIncome5yr = calculations.cashFlow.find(cf => cf.year === 5)?.net || 0;
+                    const totalReturn = totalReturn5yr + rentalIncome5yr;
+                    html += `
+                        <p><strong>Rental Income (5 years):</strong> ${formatCurrency(rentalIncome5yr)}</p>
+                        <p><strong>Total Projected Return:</strong> ${formatCurrency(totalReturn)} (${((totalReturn / calculations.totalValue) * 100).toFixed(1)}%)</p>
+                    `;
+                }
+            }
+
+            html += `
+                    <h4 style="margin-top: 15px;">Recommended Strategy</h4>
+                    <ol>
+            `;
+
+            if (propertyType === 'Land') {
+                html += `
+                    <li>Conduct professional valuation and survey</li>
+                    <li>Verify zoning and development potential</li>
+                    <li>Analyze subdivision or development options</li>
+                    <li>Consider timing for development vs. land banking</li>
+                `;
+            } else if (propertyType === 'House' && (condition.toLowerCase().includes('needs') || age.includes('20+'))) {
+                html += `
+                    <li>Get detailed renovation cost estimate</li>
+                    <li>Evaluate buy-renovate-rent vs. buy-renovate-sell strategies</li>
+                    <li>Negotiate price based on renovation needs</li>
+                    <li>Consider phased renovation to manage cash flow</li>
+                `;
+            } else if (calculations.roi.monthlyRental > 0) {
+                html += `
+                    <li>Analyze rental demand in ${location}</li>
+                    <li>Calculate accurate ROI with financing costs</li>
+                    <li>Develop property management plan</li>
+                    <li>Set 5-10 year hold strategy for optimal returns</li>
+                `;
+            } else {
+                html += `
+                    <li>Complete comprehensive due diligence</li>
+                    <li>Get professional property inspection</li>
+                    <li>Analyze comparable sales in area</li>
+                    <li>Develop clear investment thesis and exit strategy</li>
+                `;
+            }
+
+            html += `
+                    </ol>
+
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p><strong>⚡ Next Steps:</strong></p>
+                        <ol>
+                            <li><strong>Legal:</strong> Title search and due diligence</li>
+                            <li><strong>Technical:</strong> Property inspection and valuation</li>
+                            <li><strong>Financial:</strong> Secure financing and negotiate terms</li>
+                            <li><strong>Strategic:</strong> Finalize investment plan and timeline</li>
+                        </ol>
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        // ============================================================================
+        // SAMPLE DATA
+        // ============================================================================
+
+        function loadSampleData() {
+            const samples = [
+                "Luxury beachfront land in Mirissa, 21 perches asking 19 million per perch, direct ocean access, perfect for boutique hotel development, excellent location near tourist attractions",
+
+                "Modern two story house in Colombo 7, Barnes Place area, 2400 sq ft built on 8.5 perches of land, 4 bedrooms with attached bathrooms, servant room and toilet, beautiful landscaping, surrounding wall, built 5 years ago in excellent condition. No of Perches : 8.5, Size of house 2400Sq.ft, Land rate 28.5Mn per perch, Building rate at 18500 per sqft. Price 32.5 Million Negotiable.",
+
+                "Brand new 3 bedroom apartment in Colombo 3, Independence Square View, 1500 sq ft at 30000 per sq ft, 9th floor with city views, 2 car parking spaces, swimming pool, gym, 24/7 security, fully fitted kitchen, ready to move in"
+            ];
+
+            const randomSample = samples[Math.floor(Math.random() * samples.length)];
+            document.getElementById('propertyDescription').value = randomSample;
+            updateCharCount();
+
+            showToast('Sample data loaded', 'success');
+
+            // Auto-generate after loading sample
+            setTimeout(() => generateProfile(), 500);
+        }
+
+        // ============================================================================
+        // UI HELPER FUNCTIONS
+        // ============================================================================
+
+        function updateCharCount() {
+            const text = document.getElementById('propertyDescription').value;
+            document.getElementById('charCount').textContent = `${text.length} characters`;
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} active`;
+
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+        }
+
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all data?')) {
+                document.getElementById('propertyDescription').value = '';
+                document.getElementById('output').innerHTML = `
+                    <div style="text-align: center; color: #adb5bd; padding: 80px 20px;">
+                        <div style="font-size: 4em; margin-bottom: 20px;">🏘️</div>
+                        <p style="font-size: 1.1em; font-weight: 600; margin-bottom: 10px;">
+                            Ready to Analyze Your Property Investment
+                        </p>
+                        <p style="font-size: 0.95em;">
+                            Enter property details and click "Generate Profile" to receive comprehensive investment analysis
+                        </p>
+                    </div>
+                `;
+                currentAnalysis = null;
+                updateCharCount();
+                showToast('All data cleared', 'success');
+            }
+        }
+
+        // ============================================================================
+        // SAVE/LOAD FUNCTIONALITY
+        // ============================================================================
+
+        function saveAnalysis() {
+            if (!currentAnalysis) {
+                showToast('No analysis to save. Generate a profile first.', 'warning');
+                return;
+            }
+
+            const propertyName = prompt('Enter a name for this property:',
+                `${currentAnalysis.propertyType} in ${currentAnalysis.location}`);
+
+            if (!propertyName) return;
+
+            const savedProperty = {
+                id: Date.now(),
+                name: propertyName,
+                analysis: currentAnalysis,
+                savedAt: new Date().toISOString()
+            };
+
+            savedProperties.push(savedProperty);
+            localStorage.setItem('savedProperties', JSON.stringify(savedProperties));
+
+            showToast('Analysis saved successfully!', 'success');
+        }
+
+        function loadSavedProperties() {
+            const saved = localStorage.getItem('savedProperties');
+            if (saved) {
+                savedProperties = JSON.parse(saved);
+            }
+        }
+
+        function openLoadModal() {
+            loadSavedProperties();
+
+            const modal = document.getElementById('loadModal');
+            const listContainer = document.getElementById('savedPropertiesList');
+
+            if (savedProperties.length === 0) {
+                listContainer.innerHTML = `
+                    <p style="text-align: center; color: var(--text-light); padding: 40px 20px;">
+                        No saved properties found. Save an analysis to see it here.
+                    </p>
+                `;
+            } else {
+                listContainer.innerHTML = `
+                    <ul class="saved-properties">
+                        ${savedProperties.map(prop => `
+                            <li class="saved-property-item">
+                                <div class="property-item-info">
+                                    <h4>${prop.name}</h4>
+                                    <p>${new Date(prop.savedAt).toLocaleString()} • ${prop.analysis.propertyType} • ${prop.analysis.location}</p>
+                                </div>
+                                <div class="property-item-actions">
+                                    <button class="primary-btn" onclick="loadProperty(${prop.id})" style="padding: 8px 15px; font-size: 0.9em;">
+                                        Load
+                                    </button>
+                                    <button class="btn-clear" onclick="deleteProperty(${prop.id})" style="padding: 8px 15px; font-size: 0.9em;">
+                                        Delete
+                                    </button>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeLoadModal() {
+            document.getElementById('loadModal').classList.remove('active');
+        }
+
+        function loadProperty(id) {
+            const property = savedProperties.find(p => p.id === id);
+            if (property) {
+                currentAnalysis = property.analysis;
+                document.getElementById('propertyDescription').value = property.analysis.description;
+                document.getElementById('output').innerHTML = generateAnalysisHTML(property.analysis);
+                document.getElementById('output').style.display = 'block';
+                updateCharCount();
+                closeLoadModal();
+                showToast('Property loaded successfully!', 'success');
+            }
+        }
+
+        function deleteProperty(id) {
+            if (confirm('Are you sure you want to delete this saved property?')) {
+                savedProperties = savedProperties.filter(p => p.id !== id);
+                localStorage.setItem('savedProperties', JSON.stringify(savedProperties));
+                openLoadModal(); // Refresh the list
+                showToast('Property deleted', 'success');
+            }
+        }
+
+        // ============================================================================
+        // COMPARISON FUNCTIONALITY
+        // ============================================================================
+
+        function openCompareModal() {
+            loadSavedProperties();
+
+            const modal = document.getElementById('compareModal');
+            const content = document.getElementById('comparisonContent');
+
+            if (savedProperties.length < 2) {
+                content.innerHTML = `
+                    <p style="text-align: center; color: var(--text-light); padding: 40px 20px;">
+                        Save at least 2 properties to compare them
+                    </p>
+                `;
+            } else {
+                const comparisonData = savedProperties.map(prop => {
+                    const calc = prop.analysis.calculations;
+                    return {
+                        name: prop.name,
+                        type: prop.analysis.propertyType,
+                        location: prop.analysis.location,
+                        value: calc.totalValue,
+                        roi5yr: calc.roi?.year5 || 0,
+                        rental: calc.roi?.monthlyRental || 0
+                    };
+                });
+
+                content.innerHTML = `
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Type</th>
+                                <th>Location</th>
+                                <th>Current Value</th>
+                                <th>5-Yr Value</th>
+                                <th>Monthly Rental</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${comparisonData.map(prop => `
+                                <tr>
+                                    <td><strong>${prop.name}</strong></td>
+                                    <td>${prop.type}</td>
+                                    <td>${prop.location}</td>
+                                    <td>${prop.value > 0 ? formatCurrency(prop.value) : 'N/A'}</td>
+                                    <td>${prop.roi5yr > 0 ? formatCurrency(prop.roi5yr) : 'N/A'}</td>
+                                    <td>${prop.rental > 0 ? formatCurrency(prop.rental) : 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeCompareModal() {
+            document.getElementById('compareModal').classList.remove('active');
+        }
+
+        // ============================================================================
+        // MORTGAGE CALCULATOR
+        // ============================================================================
+
+        function openMortgageCalculator(propertyValue = 0) {
+            const modal = document.getElementById('mortgageModal');
+            document.getElementById('propValue').value = propertyValue;
+            calculateMortgage();
+            modal.classList.add('active');
+        }
+
+        function closeMortgageModal() {
+            document.getElementById('mortgageModal').classList.remove('active');
+        }
+
+        function calculateMortgage() {
+            const propValue = parseFloat(document.getElementById('propValue').value) || 0;
+            const downPaymentPercent = parseFloat(document.getElementById('downPayment').value) || 20;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 12;
+            const loanPeriod = parseFloat(document.getElementById('loanPeriod').value) || 20;
+
+            if (propValue === 0) {
+                document.getElementById('mortgageResult').innerHTML = `
+                    <h4>Monthly Payment: LKR 0</h4>
+                    <p>Enter property value to calculate</p>
+                `;
+                return;
+            }
+
+            const downPayment = propValue * (downPaymentPercent / 100);
+            const loanAmount = propValue - downPayment;
+            const monthlyRate = (interestRate / 100) / 12;
+            const numberOfPayments = loanPeriod * 12;
+
+            const monthlyPayment = loanAmount *
+                (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+                (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+            const totalPayment = monthlyPayment * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            document.getElementById('mortgageResult').innerHTML = `
+                <h4>💰 Monthly Payment: ${formatCurrency(monthlyPayment)}</h4>
+                <p><strong>Down Payment:</strong> ${formatCurrency(downPayment)} (${downPaymentPercent}%)</p>
+                <p><strong>Loan Amount:</strong> ${formatCurrency(loanAmount)}</p>
+                <p><strong>Total Interest:</strong> ${formatCurrency(totalInterest)}</p>
+                <p><strong>Total Payment:</strong> ${formatCurrency(totalPayment)}</p>
+                <div class="progress-bar" style="margin-top: 15px;">
+                    <div class="progress-fill" style="width: ${(totalInterest / totalPayment * 100).toFixed(1)}%; background: linear-gradient(90deg, #ff9800, #ff5722);"></div>
+                </div>
+                <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">
+                    Interest represents ${(totalInterest / totalPayment * 100).toFixed(1)}% of total payment
+                </p>
+            `;
+        }
+
+        // ============================================================================
+        // EXPORT FUNCTIONALITY
+        // ============================================================================
+
+        function exportToPDF() {
+            if (!currentAnalysis) {
+                showToast('No analysis to export. Generate a profile first.', 'warning');
+                return;
+            }
+
+            // Use browser's print functionality for PDF export
+            window.print();
+            showToast('Opening print dialog...', 'info');
+        }
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        };
+    </script>
+</body>
+</html>
